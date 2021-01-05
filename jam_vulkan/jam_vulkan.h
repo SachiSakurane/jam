@@ -33,5 +33,6 @@
 #undef JAM_VULKAN
 #define JAM_VULKAN 1
 
+#include "vulkan/jam_VulkanRenderer.hpp"
 #include "vulkan/jam_VulkanComponent.hpp"
 #include "vulkan/jam_VulkanContext.hpp"

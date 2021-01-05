@@ -9,25 +9,12 @@
 #include <juce_graphics/native/juce_mac_CoreGraphicsHelpers.h>
 
 #if JUCE_MAC
-static CVReturn DisplayLinkCallback(CVDisplayLinkRef displayLink,
-                                    const CVTimeStamp* now,
-                                    const CVTimeStamp* outputTime,
-                                    CVOptionFlags flagsIn,
-                                    CVOptionFlags* flagsOut,
-                                    void* target) {
-   //((ShellMVK*)target)->update_and_draw();
-    return kCVReturnSuccess;
-}
-
 @interface VulkanViewController : NSViewController
 @end
 
-@implementation VulkanViewController {
-    CVDisplayLinkRef    displayLink;
-}
+@implementation VulkanViewController
 
 -(void) dealloc {
-    CVDisplayLinkRelease(displayLink);
     [super dealloc];
 }
 
@@ -44,9 +31,9 @@ static CVReturn DisplayLinkCallback(CVDisplayLinkRef displayLink,
 //    _shell = new ShellMVK(*_game);
 //    _shell->run(self.view.layer);
 
-    CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
-    CVDisplayLinkSetOutputCallback(displayLink, &DisplayLinkCallback, nullptr);
-    CVDisplayLinkStart(displayLink);
+//    CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
+//    CVDisplayLinkSetOutputCallback(displayLink, &DisplayLinkCallback, nullptr);
+//    CVDisplayLinkStart(displayLink);
 }
 @end
 
@@ -54,6 +41,7 @@ class VulkanContext::NativeContext {
 public:
     explicit NativeContext(juce::Component& component) : component{component} {
         if (auto* peer = component.getPeer()) {
+            std::cout << "oh" << std::endl;
             auto bounds = peer->getAreaCoveredBy (component);
 
             controller = [[VulkanViewController alloc] init];
@@ -64,6 +52,8 @@ public:
     }
 
     ~NativeContext();
+
+    void updateWindowPosition (juce::Rectangle<int> bounds) {}
 
 private:
     juce::Component& component;

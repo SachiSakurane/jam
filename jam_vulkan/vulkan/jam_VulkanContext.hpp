@@ -10,13 +10,27 @@
 
 class VulkanContext {
 public:
-    class NativeContext;
-
-    explicit VulkanContext(juce::Component& comp);
+    VulkanContext();
     ~VulkanContext();
 
+    void setRenderer(VulkanRenderer* renderer);
+    void attachTo (juce::Component&);
+    void detach();
+    
+    void setContinuousRepainting(bool flag);
+
 private:
-    std::unique_ptr<NativeContext> context;
+    class NativeContext;
+    
+    class CachedImage;
+    class Attachment;
+
+    std::unique_ptr<CachedImage> cachedImage {nullptr};
+    std::unique_ptr<Attachment> attachment {nullptr};
+    VulkanRenderer* renderer {nullptr};
+
+    juce::Component* getTargetComponent() const noexcept;
+    void triggerRepaint();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VulkanContext)
 };

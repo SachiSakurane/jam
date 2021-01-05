@@ -4,9 +4,10 @@
 
 #include "jam_VulkanContext.hpp"
 
-class VulkanComponent : public juce::Component {
+class VulkanComponent : public juce::Component, private VulkanRenderer {
 public:
     VulkanComponent();
+    ~VulkanComponent();
 
     void initialize();
 
